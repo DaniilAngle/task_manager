@@ -1,0 +1,60 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_task_tree" model="ir.ui.view">
+        <field name="name">task.manager.tree</field>
+        <field name="model">task.manager</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="assigned_to"/>
+                <field name="priority"/>
+                <field name="status"/>
+                <field name="due_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_task_form" model="ir.ui.view">
+        <field name="name">task.manager.form</field>
+        <field name="model">task.manager</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_save_and_return"
+                            string="Save and Close"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="assigned_to"/>
+                        <field name="due_date"/>
+                        <field name="priority"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_task_manager" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task.manager</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Menus -->
+    <menuitem id="menu_task_root" name="Task Manager"/>
+    <menuitem id="menu_task" name="Tasks" parent="menu_task_root" action="action_task_manager"/>
+    <menuitem
+        id="menu_task_report_all"
+        name="Tasks Report"
+        parent="menu_task_root"
+        action="task_manager.server_action_report_all_tasks"/>
+
+</odoo>

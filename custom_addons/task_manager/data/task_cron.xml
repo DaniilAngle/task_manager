@@ -1,0 +1,15 @@
+<odoo>
+  <data noupdate="1">
+    <record id="ir_cron_task_due_reminder" model="ir.cron">
+      <field name="name">Task Due Reminder</field>
+      <field name="model_id" ref="model_task_manager"/> <!-- Reference to the model -->
+      <field name="state">code</field>
+      <field name="code">model.cron_notify_upcoming_tasks()</field> <!-- Call the method to notify users about upcoming tasks -->
+      <field name="interval_number">1</field> <!-- Run every day -->
+      <field name="interval_type">days</field>
+      <field name="numbercall">-1</field> <!-- -1 so it will run indefinitely -->
+      <field name="active">True</field>
+      <field name="groups_id" eval="[(4, ref('base.group_system'))]"/> <!-- Optional: restrict access to (Settings > Technical) group -->
+    </record>
+  </data>
+</odoo>

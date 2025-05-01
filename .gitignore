@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# Odoo
+*.log
+*.db
+*.dat
+*.zip
+*.dump
+*.pot
+*.swp
+.odoo/
+/odoo/
+odoo/addons/web/static/lib/fontawesome/webfonts/
+odoo.conf
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PostgreSQL dump
+*.sql
+
+# Compiled / packaged
+*.egg-info/
+dist/
+build/
+
+# Reports
+*.pdf
+*.xlsx
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tests
+htmlcov/
+.tox/
+coverage.xml
+.cache/
+
+# PyCharm
+*.iml
+
+# Others
+*.orig

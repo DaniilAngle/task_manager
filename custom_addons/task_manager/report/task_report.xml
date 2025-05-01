@@ -1,0 +1,10 @@
+<odoo>
+    <record id="action_report_task" model="ir.actions.report">
+        <field name="name">'Task Report</field>
+        <field name="model">task.manager</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">task_manager.report_task_template</field>
+        <field name="report_file">task_manager.report_task_template</field>
+        <field name="binding_model_id" ref="model_task_manager"/>
+    </record>
+</odoo>

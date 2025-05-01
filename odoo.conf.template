@@ -1,0 +1,9 @@
+[options]
+admin_passwd = admin_pwd
+db_host = localhost
+db_port = 5432
+db_user = your_username
+db_password = your_password
+addons_path = addons, ../custom_addons
+logfile = odoo.log
+log_level = info

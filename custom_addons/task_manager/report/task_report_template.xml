@@ -1,0 +1,29 @@
+<odoo>
+    <template id="report_task_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <h2>Task Report</h2>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Assigned To</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="task">
+                            <tr>
+                                <td><t t-esc="task.name"/></td>
+                                <td><t t-esc="task.description"/></td>
+                                <td><t t-esc="task.assigned_to.name or 'Unassigned'"/></td>
+                                <td><t t-esc="task.priority"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>
