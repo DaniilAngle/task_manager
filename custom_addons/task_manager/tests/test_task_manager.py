@@ -1,7 +1,9 @@
-from odoo.tests.common import TransactionCase, tagged
 from datetime import datetime, timedelta
-from odoo.exceptions import AccessError
 from unittest.mock import patch
+
+from odoo.tests.common import TransactionCase, tagged
+from odoo.exceptions import AccessError
+
 
 class TestTaskLogic(TransactionCase):
 
