@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from odoo.tests.common import TransactionCase, tagged
 from odoo.exceptions import AccessError
+from odoo.tests.common import TransactionCase, tagged
 
 
 class TestTaskLogic(TransactionCase):
@@ -109,7 +109,9 @@ class TestTaskCron(TransactionCase):
         })
 
     def test_cron_creates_email(self):
-        with patch('odoo.addons.mail.models.mail_mail.MailMail.send') as mock_send:
+        with patch(
+                'odoo.addons.mail.models.mail_mail.MailMail.send'
+        ) as mock_send:
             self.task_model.cron_notify_upcoming_tasks()
             self.assertTrue(mock_send.called)
 
@@ -128,7 +130,10 @@ class TestTaskReport(TransactionCase):
         })
 
     def test_make_tasks_report(self):
-        with patch('odoo.addons.task_manager.models.task_manager.TaskManager.make_tasks_report') as mock_report:
+        with patch(
+                'odoo.addons.task_manager.models.'
+                'task_manager.TaskManager.make_tasks_report'
+        ) as mock_report:
             self.task_model.make_tasks_report()
             self.assertTrue(mock_report.called)
 

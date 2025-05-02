@@ -1,10 +1,11 @@
 import logging
-from datetime import timedelta, datetime
+from datetime import datetime
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.tools import format_datetime
 
 _logger = logging.getLogger(__name__)
+
 
 class TaskManager(models.Model):
     _name = 'task.manager'
@@ -61,7 +62,6 @@ class TaskManager(models.Model):
         # I believe this needs SMTP configuration to work and actually
         # send emails. In my consideration this
         # is outside the scope of test task
-
 
         for task in tasks:
             days_left = task.get_days_left()
