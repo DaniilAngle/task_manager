@@ -22,10 +22,11 @@ Create a working directory and clone both Odoo and the custom module:
 
 ```
 git clone https://github.com/odoo/odoo.git --depth 1 --branch 17.0 odoo
-git clone https://github.com/<your-username>/task_manager.git custom_addons/task_manager
+git clone https://github.com/DaniilAngle/task_manager.git custom_addons/task_manager
 ```
 
-Replace `<your-username>` with your actual GitHub username.
+Alternatively you can use existing Odoo installation and just clone the module into `addons` (or any other addon directory for that note) directory.
+Must make sure to include the `task_manager` module in the `addons_path` of your Odoo configuration file in order to be able to install it.
 
 ---
 
@@ -115,11 +116,13 @@ Once installed, the module provides:
 
 ## 10. Running Tests
 
-Run tests after installation using:
+Run tests from ./odoo/ directory after installation using:
 
 ```
-python odoo/odoo-bin --test-enable --init mail,task_manager --stop-after-init --test-tags /task_manager
+python odoo-bin -c ..\odoo.conf -d test_db --test-enable --init task_manager --stop-after-init --test-tags /task_manager --logfile=test.log
 ```
+
+Might need to add `mail` besides `task_manager` on the initial run after `--init` to load the module in if email tests are failing.
 
 ---
 
@@ -140,7 +143,7 @@ The development environment was based on the following preinstalled components:
 - **Node.js and npm**
 - **wkhtmltopdf 0.12.6-1**
 
-An issue was encountered during the initial Odoo startup due to `wkhtmltopdf` not being in the system’s environment path. This resulted in Odoo failing to render pages correctly (404 error). Once the binary was correctly registered in the system path, Odoo loaded successfully.
+An issue was encountered during the initial Odoo startup due to `wkhtmltopdf` not being correctly registered in the system’s environment path. This resulted in Odoo failing to render pages correctly (404 error). Once the binary was correctly registered in the system path, Odoo loaded successfully.
 
 ## Odoo Environment Setup
 
@@ -188,11 +191,14 @@ task_manager/
 │   └── task_views.xml
 ```
 
+Initially, the module parts were not recognized by Odoo due to missing `__init__.py` files in subdirectories. Fixed by adding `__init__.py` files to all subdirectories, ensuring Odoo could load the module correctly.
+
 ## Functionality Overview
 
 The module provides a simple task management system with the following features:
 
 - A `task.manager` model with fields for task name, description, assigned user, due date, priority (low/medium/high), and status (new/in progress/completed).
+- Default values for priority and status fields set to medium and new, respectively.
 - Form and list views for interacting with tasks.
 - User access rights based on group assignments.
 - A Python method to calculate the number of days left until a task’s due date.
@@ -201,7 +207,7 @@ The module provides a simple task management system with the following features:
 - A menu item under “Task Manager” `Tasks Report` that triggers the report generation.
 - A custom “Save and Close” button on the task form that saves the record and redirects back to the task list view.
 
-## Testing and Debugging
+## Testing and Debugging Issues
 
 ### Email Delivery
 
@@ -209,13 +215,14 @@ The email notification system did not work initially due to improper initializat
 
 ### Report Generation
 
-The most time-consuming issue was related to implementing the task report. The core misunderstanding was assuming that the report could be registered and invoked directly using `model="task.manager"` via a menu item. This approach resulted in an id errors and later no report being shown.
+The most time-consuming issue was related to implementing the task report. The core misunderstanding was assuming that the report could be registered and invoked directly using `model="task.manager"` via a menu item. This approach resulted in an id errors and no report being shown.
+Later issues involved the report generating empty content, which was traced back to the context not being passed correctly to the report template.
 
 The resolution involved:
 
 - Registering a proper `ir.actions.report` record with `model="task.manager"` and linking it to a `qweb-pdf` template.
 - Creating a server action in Python that explicitly searches all task records and returns the report action with the recordset.
-- Connecting the server action to a menu item, which resolved the report not appearing and fixed the issue of it generating empty content.
+- Connecting the server action to a menu item resolved the report issue with report generating empty content.
 
 These changes ensured the report template received the correct context (`docs`) and generated a usable PDF.
 
@@ -225,7 +232,7 @@ Unit tests were implemented using `TransactionCase` and include:
 
 - Task creation, validation of default field values.
 - Access control tests for users with and without appropriate permissions.
-- A cron job test to verify that email notifications are triggered when expected, using `unittest.mock` to avoid sending real emails.
+- A cron job test to verify that email notifications are triggered when expected.
 - A test for the report method to ensure it returns the expected report action dictionary.
 
 Tests were tagged to run post-installation and are executable through the Odoo CLI with test mode enabled.
