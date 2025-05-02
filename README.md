@@ -84,10 +84,10 @@ log_level = info
 
 ## 7. Launch Odoo
 
-Start Odoo using the config file:
+Start Odoo using the config file from the `odoo` directory:
 
 ```
-python odoo/odoo-bin -c odoo.conf
+python odoo-bin -c ../odoo.conf
 ```
 
 Visit [http://localhost:8069](http://localhost:8069) in your browser and create a new database.
@@ -107,14 +107,30 @@ Visit [http://localhost:8069](http://localhost:8069) in your browser and create 
 Once installed, the module provides:
 
 - A “Task Manager” main menu
-- Create and manage tasks with fields: name, assignee, priority, status, due date
+- CRUD and management of the tasks with fields: name, assignee, priority, status, due date
 - Automatic email reminders for tasks due in 3 days
 - A printable PDF report of all tasks
-- A “Save and Close” button for faster workflow
+- A “Save and Close” button in task creation view for faster workflow
 
 ---
 
-## 10. Running Tests
+## 10. Functionality Overview
+
+The module provides a simple task management system with the following setup:
+
+- A `task.manager` model with fields for task name, description, assigned user, due date, priority (low/medium/high), and status (new/in progress/completed).
+- Default values for priority and status fields set to medium and new, respectively.
+- Provides user with form and list views for interacting with tasks.
+- User access rights to the task is based on group assignments, unauthorized users cannot access the task view.
+- In order to create a task, the user must press on the "New" button in the task list view, which opens a form view for task creation.
+- After creating task, user can press "New" button again or click on “Save and Close” button on the task form that saves the record and redirects back to the task list view.
+- Possible to edit the task by pressing on the task name in the list view, which opens the task form view for editing.
+- Model introduces Python method to calculate the number of days left until a task’s due date which is connected cron job that runs daily to notify assigned users of tasks due in exactly three days.
+- It is possible to make a printable PDF report listing all tasks, with fields: name, description, assigned user, and priority.
+- A menu item under “Task Manager” `Tasks Report` will trigger the report generation and prompt the user to download it. 
+- On the first run report will also prompt for the template setup, which can be skipped to use original formatting.
+
+## 11. Running Tests
 
 Run tests from ./odoo/ directory after installation using:
 
@@ -193,19 +209,6 @@ task_manager/
 
 Initially, the module parts were not recognized by Odoo due to missing `__init__.py` files in subdirectories. Fixed by adding `__init__.py` files to all subdirectories, ensuring Odoo could load the module correctly.
 
-## Functionality Overview
-
-The module provides a simple task management system with the following features:
-
-- A `task.manager` model with fields for task name, description, assigned user, due date, priority (low/medium/high), and status (new/in progress/completed).
-- Default values for priority and status fields set to medium and new, respectively.
-- Form and list views for interacting with tasks.
-- User access rights based on group assignments.
-- A Python method to calculate the number of days left until a task’s due date.
-- A cron job that runs daily to notify assigned users of tasks due in exactly three days.
-- A printable PDF report listing all tasks, with fields: name, description, assigned user, and priority.
-- A menu item under “Task Manager” `Tasks Report` that triggers the report generation.
-- A custom “Save and Close” button on the task form that saves the record and redirects back to the task list view.
 
 ## Testing and Debugging Issues
 
